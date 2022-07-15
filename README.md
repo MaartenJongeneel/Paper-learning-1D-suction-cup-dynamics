@@ -1,5 +1,5 @@
 <h1 align="center">
-Learning Suction Cup Dynamics from Motion Capture: Accurate Prediction of an Object's Vertical Motion during Release
+Learning Suction Cup Dynamics from Motion Capture: Accurate Prediction of an Object's Vertical Motion during Releasee
 </h1>
 <div align="center">
 <h3>
