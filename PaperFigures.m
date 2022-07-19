@@ -8,7 +8,7 @@ set(groot,'defaultLegendInterpreter','latex');
 %% Settings
 lineWidth = 2;
 Nsigma = 3; % the # of std the confidence interval is plotted at
-doSave = false;
+doSave = true;
 load '1DdataReduced.mat'
 load("meanAndStdData.mat")
 data = struct1Dreduced; 
@@ -175,8 +175,8 @@ figure('rend','painters','pos',[pp{1,2} sizex 1.8*sizey]);
 figure('rend','painters','pos',[pp{1,3} 0.8333*sizex 1.5*sizey]);
     ha = tight_subplot(3,1,[.05 .04],[.08 .08],[0.1 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));
-    plot(t, h*1e3, "LineWidth", lineWidth, "DisplayName","suction cup"); hold on; grid on;
-    plot(t, s*1e3, "LineWidth", lineWidth, 'DisplayName','package')
+    plot(t, h*1e3, "LineWidth", lineWidth, "DisplayName","package"); hold on; grid on;
+    plot(t, s*1e3, "LineWidth", lineWidth, 'DisplayName','suction cup')
     ylabel("Height (mm)")
     xlim([0 140]);
     ylim([50 130])
@@ -199,7 +199,7 @@ figure('rend','painters','pos',[pp{1,3} 0.8333*sizex 1.5*sizey]);
     ylim([-15 45])
     yticks(linspace(-15,45,5))
 
-    L1 = legend({'suction cup','package'},'NumColumns',2,'location','northeast');
+    L1 = legend({'package','suction cup'},'NumColumns',2,'location','northeast');
     L1.Position(2) = 0.94;
     L1.Position(1) = 0.5-(L1.Position(3)/2);
     L1.FontSize = 9;    
