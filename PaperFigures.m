@@ -1,19 +1,19 @@
-%Paper Figures
-close all; clearvars; clc;
-addpath("data"); addpath("figures"); addpath("functions")
-set(groot,'defaulttextinterpreter','latex');
-set(groot,'defaultAxesTickLabelInterpreter','latex');
-set(groot,'defaultLegendInterpreter','latex');
-
-%% Settings
-lineWidth = 2;
-Nsigma = 3; % the # of std the confidence interval is plotted at
-doSave = true;
+clearvars; clc; close all; addpath("data"); addpath("figures"); addpath("functions")
+set(groot,'defaulttextinterpreter','latex'); set(groot,'defaultAxesTickLabelInterpreter','latex'); set(groot,'defaultLegendInterpreter','latex');
+%% ---------------- learning 1D suction cup dynamics ----------------- %%
+%% Constants and Settings
+%Load the data
 load '1DdataReduced.mat'
 load("meanAndStdData.mat")
 data = struct1Dreduced; 
 exps = fieldnames(expStats);
 fn = fieldnames(data);
+
+%Settings
+lineWidth = 2;    % The linewidth 
+Nsigma    = 3;    % the # of std the confidence interval is plotted at
+doSave    = false;
+
 
 %Colors used for the masses
 colors = [0    0.5172    0.5862

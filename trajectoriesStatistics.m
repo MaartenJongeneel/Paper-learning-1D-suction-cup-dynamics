@@ -270,19 +270,9 @@ for m = masses
 %         ylabel("Tool arm velocity (m/s^2)")%,"FontSize",12)
         xlabel("Time (ms)")
     end
-    
-
-%     figure(masses == m)
-%     subplot(3,1,1)
-%     title("")
-%     if plotAoE
-%         saveas(figure(9), "toolArmStatsMass1581.eps","epsc")
-%     elseif plotAoB
-%         saveas(figure(9), "objectStatsMass1581.eps","epsc")
-%     end
 end
 
-save("meanAndStdData.mat", "expStats")
+save("/data/meanAndStdData.mat", "expStats")
 figure(9)
 subplot(3,1,1)
 title("")
