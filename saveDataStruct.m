@@ -1,6 +1,8 @@
-close all; clear; clc;
+% This script loads the 1D hdf5 file and extracts relevant data for 1D
+% model and saves struct of h5 file to "1D Archive.mat" to
+% and only relevant vertical data to "1DdataReduced.mat"
 
-tic
+close all; clear; clc;
 
 if not(isfile("1D Archive.mat"))
     fprintf("Loading .h5 file... \n")
@@ -13,10 +15,10 @@ else
     load("1D Archive.mat")
     fprintf("Loaded data from .mat file.\n")
 end
-toc
+
 %% Everything but loading data
 close all;
-plotz = true;
+plotz = false;
 plotAoE_z = false;
 plotAoB_z = false;
 plotforce = false;
@@ -162,17 +164,6 @@ for i = 1:length(masses)
                 ylabel("$^E\ddot{o}_B$ (ms\textsuperscript{2})","Interpreter","latex")
                 xlabel("Time (s)")
 
-
-                % 3D plot
-                %                 figure(i+length(masses))
-                %                 plot3(EoB, EoBd*m, time)
-                %                 title(append("Mass: ", string(masses(i)), "kg"))
-                %                 grid on
-                %                 hold on
-                %                 xlabel("$^Eo_B$ (m)","Interpreter","latex")
-                %                 ylabel("$^E\dot{o}_B$ (m/s)","Interpreter","latex")
-                %                 zlabel("$t$ (s)", 'Interpreter','latex')
-                %                 axis square
             elseif plotAoE_z
                 figure(i)
                 subplot(3,1,1)
@@ -188,14 +179,12 @@ for i = 1:length(masses)
                 grid on
                 ylabel("$^A\dot{o}_E$ (m/s)","Interpreter","latex")
 
-
                 subplot(3,1,3)
                 plot(time, AoE_zdd)
                 hold on
                 grid on
                 ylabel("$^A\ddot{o}_E$ (ms\textsuperscript{-2})","Interpreter","latex")
                 xlabel("Time (s)")
-
 
             elseif plotAoB_z
                 figure(i)
@@ -238,13 +227,10 @@ for i = 1:length(masses)
 end
 
 
-%% Removing outlier: mass 7 experiment 5 as can be seen in Figure 7
+%% Removing outlier: mass 7 experiment 5 
 struct1Dreduced = rmfield(struct1Dreduced, "mass7experiment5");
 
-% The outlier shows in the plot of figure 7, but is removed in the line
-% above. From here on the outlier data is no longer used.
-
-
+%% Saving data to 1DdataReduced.mat
 disp("Done processing data.")
 disp("Saving data to 1DdataReduced.mat..")
 tic
