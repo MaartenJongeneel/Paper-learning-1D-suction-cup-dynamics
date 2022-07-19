@@ -92,6 +92,106 @@ end
 time = [0:length(position_obj)-1]/360;
 time = time*1000;
 
+
+% Plot mz, mzd for all masses at same times
+% submersion = figure(1);
+for ti = 1:length(time)
+    N = length(exps);
+    z = zeros(N,1);
+    zd = zeros(N,1);
+    m = zeros(N,1);
+    for i = 1:N
+        z(i) = expStats.(exps{i}).EoB_zmean(ti);
+        zd(i) = expStats.(exps{i}).EoB_zdmean(ti);
+        m(i) = expStats.(exps{i}).mass;
+    end
+% %     plot3(z.*m, zd.*m, time(ti)*ones(N,1)*1000,'color',[.4, .4, .4],'HandleVisibility','off')
+%     hold on
+end
+
+
+for i = 1:length(exps)
+
+    m = expStats.(exps{i}).mass;
+    switch m
+        case masses(1)
+            linespec = 'r';
+        case masses(2)
+            linespec = 'g';
+        case masses(3)
+            linespec = 'b';
+        case masses(4)
+            linespec = 'c';
+        case masses(5)
+            linespec = 'm';
+        case masses(6)
+            linespec = 'y';
+        case masses(7)
+            linespec = 'k';
+        case masses(8)
+            linespec = 'r--';
+        case masses(9)
+            linespec = 'g--';
+        case masses(10)
+            linespec = 'b--';
+    end
+%     time = [0:length(expStats.(exps{i}).EoB_zmean)-1]/360;
+%     plot3(expStats.(exps{i}).EoB_zmean*expStats.(exps{i}).mass, expStats.(exps{i}).EoB_zdmean*expStats.(exps{i}).mass, time*1000, linespec,'LineWidth',1,'DisplayName',append(string(m), 'kg'))
+%     hold on
+end
+
+grid on
+axis square
+legend("NumColumns",2,'Location', 'best')
+xlabel("$zm$ (kg m)")
+ylabel("$\dot{z}m$ (kgm/s)")
+zlabel("Time (ms)")
+view(25,25)
+
+% Plot zm, zdm for all masses at same times
+N = length(exps);
+for ti = 1:length(time)
+    for i = 1:N
+        z(i,ti) = expStats.(exps{i}).EoB_zmean(ti);
+        zd(i,ti) = expStats.(exps{i}).EoB_zdmean(ti);
+        m(i) = expStats.(exps{i}).mass;
+    end
+end
+
+figure;
+for ti=1:length(time); plot3(m'.*z(:,ti)*1000, m'.*zd(:,ti), time(ti)*ones(1,N),'color',[.4, .4, .4],'HandleVisibility','off'); hold on; end; hold on;
+for ii=1:N; plot3(m(ii)*z(ii,:)*1000, m(ii)*zd(ii,:), time, 'LineWidth',1,'color',colors(ii,:)); hold on; end;
+grid on
+axis square
+L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',5,'location','northeast');
+L1.Position(2) = 0.90;
+L1.Position(1) = 0.5-(L1.Position(3)/2)+0.06;
+L1.FontSize = 9;
+xlabel("$z$ (mm)")
+ylabel("$\dot{z}$ (m/s)")
+zlabel("Time (ms)")
+view(25,25) 
+
+figure;
+for ti=1:length(time); plot3(z(:,ti)*1000, zd(:,ti), time(ti)*ones(1,N),'color',[.4, .4, .4],'HandleVisibility','off'); hold on; end; hold on;
+for ii=1:N; plot3(z(ii,:)*1000, zd(ii,:), time, 'LineWidth',1,'color',colors(ii,:)); hold on; end;
+grid on
+axis square
+L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',5,'location','northeast');
+L1.Position(2) = 0.90;
+L1.Position(1) = 0.5-(L1.Position(3)/2)+0.06;
+L1.FontSize = 9;
+xlabel("$z$ (mm)")
+ylabel("$\dot{z}$ (m/s)")
+zlabel("Time (ms)")
+view(25,25) 
+
+%% Save figures
+% saveas(submersion, 'submersion.eps', 'epsc')
+% saveas(simpleinputspace, 'unsubmerged.eps', 'epsc')
+
+
+
 %% Plot the figures
 %Check if figures directory exists, if not, it will create one.
 if ~isfolder('figures')
