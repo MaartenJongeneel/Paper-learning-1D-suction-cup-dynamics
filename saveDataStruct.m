@@ -4,20 +4,20 @@
 
 close all; clear; clc;
 
-if not(isfile("1D Archive.mat"))
+% if not(isfile("1D Archive.mat"))
     fprintf("Loading .h5 file... \n")
     struct1D = readH5("1D Archive.h5");
-    fprintf("Saving data in .mat file... \n")
-    save("1D Archive.mat", "struct1D",'-v7.3')
-    fprintf("Saved data to .mat file.")
-else
-    fprintf("Loading .mat file with data... \n")
-    load("1D Archive.mat")
-    fprintf("Loaded data from .mat file.\n")
-end
+%     fprintf("Saving data in .mat file... \n")
+%     save("1D Archive.mat", "struct1D",'-v7.3')
+%     fprintf("Saved data to .mat file.")
+% else
+%     fprintf("Loading .mat file with data... \n")
+%     load("1D Archive.mat")
+%     fprintf("Loaded data from .mat file.\n")
+% end
 
 %% Everything but loading data
-close all;
+
 plotz = false;
 plotAoE_z = false;
 plotAoB_z = false;

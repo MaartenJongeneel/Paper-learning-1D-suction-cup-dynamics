@@ -213,7 +213,7 @@ for m = masses
         plot(time, AoB_zddmean - AoB_zddstd*Nsigma, 'r', "HandleVisibility", "off")
         grid on
         ylabel("$(^A\ddot{\mathbf{o}}_B)_z$ (m/s\textsuperscript{2})","Interpreter","latex",'FontSize',12)
-        xlabel("Time (ms)")
+        xlabel("Time (ms)","FontSize",12)
 
     elseif plotforce
         figure
@@ -239,14 +239,14 @@ for m = masses
         plot(time, AoE_zmean*1e3 + AoE_zstd*1e3*Nsigma, 'r', "DisplayName","3\sigma interval")
         plot(time, AoE_zmean*1e3 - AoE_zstd*1e3*Nsigma, 'r', "HandleVisibility", "off")
         grid on
-        title(append("Mass: ", string(m), "kg"))
+%         title(append("Mass: ", string(m), "kg"))
         ylabel("$(^A\mathbf{o}_E)_z$ (mm)","Interpreter","latex",'FontSize',12)
 %         ylabel("Tool arm height (mm)")%, "FontSize",12)
         legend("location","best")
 
 
         subplot(3,1,2)
-        title(append("Mass: ", string(m), "kg"))
+%         title(append("Mass: ", string(m), "kg"))
         plot(time, AoE_zdmat,'.b',"MarkerSize",dataMarkerSize)
         hold on
         plot(time, AoE_zdmean, 'k','LineWidth',meanLineWidth)
@@ -259,7 +259,7 @@ for m = masses
         subplot(3,1,3)
 
         plot(time, AoE_zddmat,'.b',"MarkerSize",dataMarkerSize)
-        title(append("Mass: ", string(m), "kg"))
+%         title(append("Mass: ", string(m), "kg"))
         hold on
         plot(time, AoE_zddmean, 'k','LineWidth',meanLineWidth)
         plot(time, AoE_zddmean + AoE_zddstd*Nsigma, 'r', "HandleVisibility","off")
@@ -268,11 +268,21 @@ for m = masses
         ylabel("$(^A\ddot{\mathbf{o}}_E)_z$ (m/s\textsuperscript{2})","Interpreter","latex",'FontSize',12)
 %         ylabel("$\ddot{a}$", "Interpreter","latex","FontSize",12)
 %         ylabel("Tool arm velocity (m/s^2)")%,"FontSize",12)
-        xlabel("Time (ms)")
+        xlabel("Time (ms)", "FontSize",12)
     end
+    
+
+%     figure(masses == m)
+%     subplot(3,1,1)
+%     title("")
+%     if plotAoE
+%         saveas(figure(9), "toolArmStatsMass1581.eps","epsc")
+%     elseif plotAoB
+%         saveas(figure(9), "objectStatsMass1581.eps","epsc")
+%     end
 end
 
-save("/data/meanAndStdData.mat", "expStats")
+save("meanAndStdData.mat", "expStats")
 figure(9)
 subplot(3,1,1)
 title("")
