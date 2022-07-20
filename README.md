@@ -1,7 +1,9 @@
+<div align="center">
 <h1 align="center">
 Learning Suction Cup Dynamics from Motion Capture:
 Accurate Prediction of an Object's Vertical Motion during Releasee
 </h1>
+</div>
 <div align="center">
 <h3>
 <a href="https://research.tue.nl/">Menno Lubbers</a>,
