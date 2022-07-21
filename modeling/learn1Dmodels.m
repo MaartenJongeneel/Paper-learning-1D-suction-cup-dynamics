@@ -24,13 +24,12 @@ masses = sort(unique(masses));
 wb = waitbar(0,'Training..');
 k = 0; % dummy to for waitbar
 
-% init_Dvec = 250:50:350; % initial kernel width/receptive field distance metric
-init_Dvec = 1;
+init_Dvec = 650:-10:550; % initial kernel width/receptive field distance metric
 
 % Convergence criterion settings
 maxIter = 100; % maximum amount of iterations
 minIter = 5; % minimum amount of iterations
-epsilon = 0.0001; % convergence criterion
+epsilon = 0.0001; % convergence criterion: if the NMSE does not decrease more than this ten times -> convergence
 
 trainingBouts = length(masses)*length(init_Dvec); % amount of training bouts to be done
 timeLefts = []; % vector to save the time that is left for estimation of the remaining time
