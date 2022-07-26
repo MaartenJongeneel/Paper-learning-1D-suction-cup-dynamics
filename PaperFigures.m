@@ -10,22 +10,23 @@ exps = fieldnames(expStats);
 fn = fieldnames(data);
 
 %Settings
-lineWidth = 2;    % The linewidth 
+lineWidth = 1.5;    % The linewidth 
 Nsigma    = 3;    % the # of std the confidence interval is plotted at
 doSave    = false;
 
 
-%Colors used for the masses
-colors = [0    0.5172    0.5862
-         0         0    0.4828
-    0.5862    0.8276    0.3103
-    0.9655    0.6207    0.8621
-    0.8276    0.0690    1.0000
-    0.4828    0.1034    0.4138
-    0.9655    0.0690    0.3793
-    1.0000    0.7586    0.5172
-    0.1379    0.1379    0.0345
-    0.5517    0.6552    0.4828];
+% Colors used for the masses
+colors = 1/255*...
+[0   0   123
+ 93  85  0
+ 149 211 79
+ 162 129 0
+ 15  98  106
+ 201 169 128
+ 110 0   0
+ 246 169 1
+ 150 0   0
+ 25  85  60];
 
 
 %Computations
@@ -127,15 +128,15 @@ figure('rend','painters','pos',[pp{1,1} sizex 1.8*sizey]);
     ha = tight_subplot(1,1,[.05 .04],[.1 .12],[0.04 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));
     for ti=1:length(time); plot3(m'.*z(:,ti)*1000, m'.*zd(:,ti), time(ti)*ones(1,N),'color',[.4, .4, .4],'HandleVisibility','off'); hold on; end; hold on;
-    for ii=1:N; plot3(m(ii)*z(ii,:)*1000, m(ii)*zd(ii,:), time, 'LineWidth',1,'color',colors(ii,:)); hold on; end;
+    for ii=1:N; plot3(m(ii)*z(ii,:)*1000, m(ii)*zd(ii,:), time, 'LineWidth',lineWidth,'color',colors(ii,:)); hold on; end;
     grid on
     axis square
     L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',5,'location','northeast');
     L1.Position(2) = 0.90;
     L1.Position(1) = 0.5-(L1.Position(3)/2);
     L1.FontSize = 9;
-    xlabel("$z$ (mm)")
-    ylabel("$\dot{z}$ (m/s)")
+    xlabel("$mz$ (mm)")
+    ylabel("$m\dot{z}$ (m/s)")
     zlabel("Time (ms)")
     view(25,25) 
     if doSave
@@ -150,7 +151,7 @@ figure('rend','painters','pos',[pp{1,2} sizex 1.8*sizey]);
     ha = tight_subplot(1,1,[.05 .04],[.1 .12],[0.04 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));
     for ti=1:length(time); plot3(z(:,ti)*1000, zd(:,ti), time(ti)*ones(1,N),'color',[.4, .4, .4],'HandleVisibility','off'); hold on; end; hold on;
-    for ii=1:N; plot3(z(ii,:)*1000, zd(ii,:), time, 'LineWidth',1,'color',colors(ii,:)); hold on; end;
+    for ii=1:N; plot3(z(ii,:)*1000, zd(ii,:), time, 'LineWidth',lineWidth,'color',colors(ii,:)); hold on; end;
     grid on
     axis square
     L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',5,'location','northeast');
@@ -242,48 +243,48 @@ figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
 
 %% Plot the position velocity and acceleration of object and tool  arm
 figure('rend','painters','pos',[pp{2,1}+[0 250] 2.2*sizex 1.3*sizey]);
-    ha = tight_subplot(3,2,[.05 .07],[.1 .14],[0.06 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
+    ha = tight_subplot(3,2,[.05 .07],[.09 .11],[0.04 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));    
-    for ii = 1:width(position_obj); plot(time, position_obj(:,ii)*1000,'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, position_obj(:,ii)*1000,'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
     ylabel('$h$ (mm)')
 
     axes(ha(3)); 
-    for ii = 1:width(position_obj); plot(time, velocity_obj(:,ii),'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, velocity_obj(:,ii),'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
     ylabel('$\dot{h}$ (m/s)')
     
     axes(ha(5)); 
-    for ii = 1:width(position_obj); plot(time, accelera_obj(:,ii),'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, accelera_obj(:,ii),'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
     ylabel('$\ddot{h}$ (m/s$^2$)')
     xlabel("Time (ms)")
 
     axes(ha(2));    
-    for ii = 1:width(position_obj); plot(time, position_arm(:,ii)*1000,'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, position_arm(:,ii)*1000,'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
     ylabel('$a$ (mm)')
 
     axes(ha(4)); 
-    for ii = 1:width(position_obj); plot(time, velocity_arm(:,ii),'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, velocity_arm(:,ii),'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
     ylabel('$\dot{a}$ (m/s)')
     
     axes(ha(6)); 
-    for ii = 1:width(position_obj); plot(time, accelera_arm(:,ii),'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, accelera_arm(:,ii),'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
     ylabel('$\ddot{a}$ (m/s$^2$)')
     xlabel("Time (ms)")
 
-    L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',5,'location','northeast');
-    L1.Position(2) = 0.90;
-    L1.Position(1) = 0.5-(L1.Position(3)/2)+0.06;
+    L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',10,'location','northeast');
+    L1.Position(2) = 0.93;
+    L1.Position(1) = 0.5-(L1.Position(3)/2);
     L1.FontSize = 9; 
 
     if doSave
