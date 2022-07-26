@@ -8,16 +8,16 @@ exps = fieldnames(data);
 Mtrain = [];
 Mtest = [];
 for i = 1:length(exps)
-    EoB_z = data.(exps{i}).EoB_zmean;
-    EoB_zd = data.(exps{i}).EoB_zdmean;
-    time = ([0:length(EoB_z)-1]/360)';
+    z = data.(exps{i}).z_avg';
+    dz = data.(exps{i}).dz_avg';
+    time = ([0:length(z)-1]/360)';
     mass = data.(exps{i}).mass;
-    f = data.(exps{i}).Afscuppckgmean;
+    f = data.(exps{i}).f_scuppckg';
     % Save the training and validation data in separate matrices.
     if mass == testMass
-        Mtest = [Mtest; EoB_z*mass, EoB_zd*mass, time, f, mass*ones(length(time),1)]; % m z, m zd, t
+        Mtest = [Mtest; z*mass, dz*mass, time, f, mass*ones(length(time),1)]; % m z, m zd, t
     else
-        Mtrain = [Mtrain; EoB_z*mass, EoB_zd*mass, time, f, mass*ones(length(time),1)]; % m z, m zd, t
+        Mtrain = [Mtrain; z*mass, dz*mass, time, f, mass*ones(length(time),1)]; % m z, m zd, t
     end
 end
 

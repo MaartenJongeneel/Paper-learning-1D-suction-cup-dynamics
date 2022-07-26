@@ -24,8 +24,8 @@ masses = sort(unique(masses));
 wb = waitbar(0,'Training..');
 k = 0; % dummy to for waitbar
 
-init_Dvec = 650:-10:550; % initial kernel width/receptive field distance metric
-
+% init_Dvec = 650:-10:550; % initial kernel width/receptive field distance metric
+init_Dvec = 600;
 % Convergence criterion settings
 maxIter = 100; % maximum amount of iterations
 minIter = 5; % minimum amount of iterations

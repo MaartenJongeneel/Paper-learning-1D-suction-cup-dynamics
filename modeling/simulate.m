@@ -9,5 +9,5 @@ end
 
 
 for i = 1:length(initHyperParGroupings) % looping over all init_D
-    simulateFunc(initHyperParGroupings{i}, 'absolute', true);
+    simulateFunc(initHyperParGroupings{i}, true);
 end
