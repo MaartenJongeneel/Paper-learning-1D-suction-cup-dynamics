@@ -225,9 +225,7 @@ figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
     ylabel("$z(t_0)$ (mm)")
     ylim([49, 54]);
     xlim([0 2.3]);
-%     yticks([-54 -53.5 -53 -52.5 -52 -51.5 -51 -50.5 -50 -49.5 -49])
     yticks(-flip([-54 -53.5 -53 -52.5 -52 -51.5 -51 -50.5 -50 -49.5 -49]))
-%     yticklabels({'-54','-53.5','-53','-52.5','-52','-51.5','-51','-50.5','-50','-49.5','-49'})
     yticklabels({'49','49,5','50','50,5', '51', '51,5', '52', '52,5', '53', '53,5', '54'})
     L1 = legend({'datapoints','mean','3$\sigma$ interval'},'NumColumns',3,'location','northeast');
     L1.Position(2) = 0.92;
