@@ -1,4 +1,4 @@
-clearvars; clc; close all; addpath("data"); addpath("figures"); addpath("functions")
+clearvars; clc; close all; addpath("data"); addpath("figures"); addpath("functions");
 set(groot,'defaulttextinterpreter','latex'); set(groot,'defaultAxesTickLabelInterpreter','latex'); set(groot,'defaultLegendInterpreter','latex');
 %% ---------------- learning 1D suction cup dynamics ----------------- %%
 %% Constants and Settings

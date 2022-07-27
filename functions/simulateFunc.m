@@ -74,7 +74,7 @@ for testMass = 1:10
     dz_sim(end) = dh_sim(end) - da_exp(end);
     EoB_zdd_sim = ddh_sim - dda_exp;
 
-    confidenceDisplayName = "3\sigma margin on experiments";
+    confidenceDisplayName = "3$\sigma$ margin on experiments";
     if plotBool
         execStr = append("f",string(m*1000),' = figure;');
         eval(execStr)
@@ -96,7 +96,7 @@ for testMass = 1:10
         plot(time_exp, dh_exp + Nsigma*dh_exp_std, 'r--', "DisplayName",confidenceDisplayName)
         plot(time_exp, dh_exp - Nsigma*dh_exp_std, 'r--', "HandleVisibility","off")
         grid on
-        ylabel("$dot{h}$ (m/s)","Interpreter","latex","FontSize",fontSize)
+        ylabel("$\dot{h}$ (m/s)","Interpreter","latex","FontSize",fontSize)
 
         subplot(3,1,3)
         plot(time_exp, ddh_exp)

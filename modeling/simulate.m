@@ -50,4 +50,4 @@ xlabel("init_D")
 grid on
 
 %% Plot simulation results of best init_D
-simulateFunc("init_D630", true);
+simulateFunc("init_D600", true);
