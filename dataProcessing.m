@@ -153,5 +153,5 @@ for m = masses
 end
 
 save("data\meanAndStdData.mat","expStats") % save experiment mean and stds
-
+fprintf("Saved experiment statistics to 'meanAndStdData.mat'.\n")
 
