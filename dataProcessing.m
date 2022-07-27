@@ -4,7 +4,7 @@ close all; clear; clc;
 % Savitzky-Golay on the 3D motion, and consequently extracts the vertical
 % motion and saves them to the .mat file data1D.mat. Run this script from
 % main directory.
-
+plotting = false;
 %% Read .h5 file if the .mat version is not available
 if not(isfile("data/1D Archive.mat")) % this generally takes a few minutes
     tic
@@ -14,7 +14,7 @@ if not(isfile("data/1D Archive.mat")) % this generally takes a few minutes
     fprintf(append("Reading .h5 file took ", string(dt), " seconds.\n"))
     fprintf("Saving data in .mat file... \n")
     save("data/1D Archive.mat", "struct1D",'-v7.3') % save .h5 data to mat for faster loading in future
-    fprintf("Saved data to .mat file.")
+    fprintf("Saved data to .mat file.\n")
 else % if 1D Archive.mat is available, load that instead as its faster
     tic
     fprintf("Loading .mat file with data... \n")
@@ -29,9 +29,8 @@ close all
 % Savitzky-Golay parameters
 p_linear = 3;
 n_linear = 9;
-% n_linear = 8;
-
 processedData = processData(struct1D, p_linear, n_linear, 0.14);
+save("data\processedData.mat", "processedData")
 
 %% Average data
 exps = fieldnames(processedData);
@@ -43,30 +42,6 @@ end
 
 masses = sort(unique(masses));
 
-
-% for m = masses
-%     figure
-%     for i = 1:Nexps
-%         exp = processedData.(exps{i});
-%         if exp.mass == m
-%             subplot(3,1,1)
-%             plot(exp.time, exp.h)
-%             hold on
-%             grid on
-%             title(append("Mass: ", string(m), " kg"))
-% 
-%             subplot(3,1,2)
-%             plot(exp.time, exp.dh)
-%             hold on 
-%             grid on
-% 
-%             subplot(3,1,3)
-%             plot(exp.time, exp.ddh)
-%             hold on
-%             grid on
-%         end
-%     end
-% end
 Nsigma = 3;
 
 g = 9.81;
@@ -109,7 +84,6 @@ for m = masses
     ddh_avg(masses==m,:) = mean(ddh_mat, 1);
     ddh_std(masses==m,:) = std(ddh_mat, 1);
 
-
     a_avg(masses==m,:) = mean(a_mat, 1);
     a_std(masses==m,:) = std(a_mat, 1);
 
@@ -150,28 +124,29 @@ for m = masses
     expStats.(append("mass",string(m*1000))).time = exp.time;
     
     expStats.(append("mass",string(m*1000))).f_scuppckg = f_scuppckg;
-
-    figure(find(masses == m))
-    subplot(3,1,1)
-    plot(exp.time, h_avg(masses==m,:),'k')
-    hold on
-    plot(exp.time, h_avg(masses==m,:) + Nsigma*h_std(masses==m,:),'r')
-    plot(exp.time, h_avg(masses==m,:) - Nsigma*h_std(masses==m,:),'r')
-    grid on
-
-    subplot(3,1,2)
-    plot(exp.time, dh_avg(masses==m,:),'k')
-    hold on
-    plot(exp.time, dh_avg(masses == m,:) + Nsigma*dh_std(masses==m,:), 'r')
-    plot(exp.time, dh_avg(masses == m,:) - Nsigma*dh_std(masses==m,:), 'r')
-    grid on
-
-    subplot(3,1,3)
-    plot(exp.time, ddh_avg(masses==m,:),'k')
-    hold on
-    plot(exp.time, ddh_avg(masses==m,:) + Nsigma*ddh_std(masses==m,:),'r')
-    plot(exp.time, ddh_avg(masses==m,:) - Nsigma*ddh_std(masses==m,:),'r')
-    grid on
+    if plotting
+        figure(find(masses == m))
+        subplot(3,1,1)
+        plot(exp.time, h_avg(masses==m,:),'k')
+        hold on
+        plot(exp.time, h_avg(masses==m,:) + Nsigma*h_std(masses==m,:),'r')
+        plot(exp.time, h_avg(masses==m,:) - Nsigma*h_std(masses==m,:),'r')
+        grid on
+    
+        subplot(3,1,2)
+        plot(exp.time, dh_avg(masses==m,:),'k')
+        hold on
+        plot(exp.time, dh_avg(masses == m,:) + Nsigma*dh_std(masses==m,:), 'r')
+        plot(exp.time, dh_avg(masses == m,:) - Nsigma*dh_std(masses==m,:), 'r')
+        grid on
+    
+        subplot(3,1,3)
+        plot(exp.time, ddh_avg(masses==m,:),'k')
+        hold on
+        plot(exp.time, ddh_avg(masses==m,:) + Nsigma*ddh_std(masses==m,:),'r')
+        plot(exp.time, ddh_avg(masses==m,:) - Nsigma*ddh_std(masses==m,:),'r')
+        grid on
+    end
 end
 
 save("data\meanAndStdData.mat","expStats")

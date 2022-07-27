@@ -16,8 +16,10 @@ for i = 1:length(exps)
     % Save the training and validation data in separate matrices.
     if mass == testMass
         Mtest = [Mtest; z*mass, dz*mass, time, f, mass*ones(length(time),1)]; % m z, m zd, t
+%         Mtest = [Mtest; z, dz*mass, time, f, mass*ones(length(time),1)]; % z, m zd, t
     else
         Mtrain = [Mtrain; z*mass, dz*mass, time, f, mass*ones(length(time),1)]; % m z, m zd, t
+%         Mtrain = [Mtrain; z, dz*mass, time, f, mass*ones(length(time),1)]; % z, m zd, t
     end
 end
 
@@ -46,7 +48,7 @@ modelname = append("initD",string(init_D),"testmass",string(testMass));
 
 % Initializing the LWPR model
 model = lwpr_init(inputdim,1,'name',modelname);
-initializeLWPR; % script to choose model parameters
+LWPRsettings; % script to choose model parameters
 
 %  Transfer model into mex-internal storage
 model = lwpr_storage('Store',model);

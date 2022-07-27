@@ -1,4 +1,4 @@
-function [] = simulateFunc(initHyperParGrouping, plotBool)
+function [sim_result] = simulateFunc(initHyperParGrouping, plotBool)
 load("meanAndStdData.mat")
 fnStats = fieldnames(expStats);
 g = 9.81;
@@ -56,6 +56,7 @@ for testMass = 1:10
         dz_sim(ii) = da_exp(ii) - dh_sim(ii);
         t = time_exp(ii);
         zeta = [z_sim(ii)*m, dz_sim(ii)*m, t];
+%         zeta = [z_sim(ii), dz_sim(ii)*m, t];
 
 
         f_scuppcg_sim(ii) = lwpr_predict(model, zeta'); % predict the force
@@ -107,6 +108,29 @@ for testMass = 1:10
         ylabel("$\ddot{h}$ (m/s \textsuperscript{2})","Interpreter","latex","FontSize",fontSize)
         xlabel("Time (s)", "Interpreter","latex",FontSize=fontSize)
     end
+    
+    RMSE_h = sqrt(mean((h_sim-h_exp').^2));
+    RMSE_dh = sqrt(mean((dh_sim-dh_exp').^2));
+    RMSE_ddh = sqrt(mean((ddh_sim-ddh_exp').^2));
+
+    MAE_h = max(abs(h_sim-h_exp'));
+    MAE_dh = max(abs(dh_sim-dh_exp'));
+    MAE_ddh = max(abs(ddh_sim-ddh_exp'));
+
+    errors.RMSE_h = RMSE_h;
+    errors.RMSE_dh = RMSE_dh;
+    errors.RMSE_ddh = RMSE_ddh;
+    errors.MAE_h = MAE_h;
+    errors.MAE_dh = MAE_dh;
+    errors.MAE_ddh = MAE_ddh;
+
+    fld = append("mass",string(expStats.(fnStats{testMass}).mass*1000));
+    sim_result.(fld).h_sim = h_sim;
+    sim_result.(fld).dh_sim = dh_sim;
+    sim_result.(fld).ddh_sim = ddh_sim;
+
+    sim_result.(fld).errors = errors;
+    sim_result.init_D = str2double(initHyperParGrouping(7:end));
 end
 
 

@@ -4,7 +4,8 @@
 % not decreased by more than epsilon over the last 5 training iterations,
 % and a minimum amount of iterations has been reached. Training also stops
 % when a maximum amount of iterations is reached. The progress bar shows an
-% estimate of remaining time untill completion.
+% estimate of remaining time untill completion. See "LWPRsettings.m" for
+% the settings of the LWPR algorithm used in learning.
 close all; clear; clc;
 
 %% Load data and format it to be readable for LWPR algorithm
@@ -25,7 +26,7 @@ wb = waitbar(0,'Training..');
 k = 0; % dummy to for waitbar
 
 % init_Dvec = 650:-10:550; % initial kernel width/receptive field distance metric
-init_Dvec = 600;
+init_Dvec = 560;
 % Convergence criterion settings
 maxIter = 100; % maximum amount of iterations
 minIter = 5; % minimum amount of iterations

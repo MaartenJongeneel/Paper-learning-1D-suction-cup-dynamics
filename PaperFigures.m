@@ -3,16 +3,16 @@ set(groot,'defaulttextinterpreter','latex'); set(groot,'defaultAxesTickLabelInte
 %% ---------------- learning 1D suction cup dynamics ----------------- %%
 %% Constants and Settings
 %Load the data
-load '1DdataReduced.mat'
-load("meanAndStdData.mat")
-data = struct1Dreduced; 
+load('data/processedData.mat')
+load("data/meanAndStdData.mat")
+data = processedData; 
 exps = fieldnames(expStats);
 fn = fieldnames(data);
 
 %Settings
 lineWidth = 2;    % The linewidth 
 Nsigma    = 3;    % the # of std the confidence interval is plotted at
-doSave    = false;
+doSave    = true;
 
 
 %Colors used for the masses
@@ -30,28 +30,28 @@ colors = [0    0.5172    0.5862
 
 %Computations
 for i = 109% 1:Nexps
-    exp = struct1Dreduced.(fn{i});
+    exp = data.(fn{i});
 
     fprintf(append("Used mass: ", string(exp.mass), " kilograms.\n"))
 
     t = exp.time*1000;
-    h = exp.AoB_z;
-    hd = exp.AoB_zd;
-    hdd = exp.AoB_zdd;
+    h = exp.h;
+    dh = exp.dh;
+    ddh = exp.ddh;
 
-    s = exp.AoS_z;
-    sd = exp.AoS_zd;
-    sdd = exp.AoS_zdd;
+    s = exp.s;
+    ds = exp.ds;
+    dds = exp.dds;
 
-    a = exp.AoE_z;
-    ad = exp.AoE_zd;
-    add = exp.AoE_zdd;
+    a = exp.a;
+    da = exp.da;
+    dda = exp.dda;
 end
 
 masses = [];
 z0s = [];
 for i = 1:length(fn)
-    z0 = data.(fn{i}).EoB_z(1)*1000;
+    z0 = data.(fn{i}).z(1)*1000;
     z0s = [z0s;z0];
     m = data.(fn{i}).mass;
     masses = [masses; m];
@@ -77,17 +77,17 @@ minmass = min(mass_2);
 
 for i = 1:length(exps)
     mass = expStats.(exps{i}).mass;
-    position_obj(:,i) = expStats.(exps{i}).AoB_zmean;
-    velocity_obj(:,i) = expStats.(exps{i}).AoB_zdmean;
-    accelera_obj(:,i) = expStats.(exps{i}).AoB_zddmean;
+    position_obj(:,i) = expStats.(exps{i}).h_avg;
+    velocity_obj(:,i) = expStats.(exps{i}).dh_avg;
+    accelera_obj(:,i) = expStats.(exps{i}).ddh_avg;
 
-    position_rel(:,i) = expStats.(exps{i}).EoB_zmean;
-    velocity_rel(:,i) = expStats.(exps{i}).EoB_zdmean;
-    accelera_rel(:,i) = expStats.(exps{i}).EoB_zddmean;
+    position_rel(:,i) = expStats.(exps{i}).z_avg;
+    velocity_rel(:,i) = expStats.(exps{i}).dz_avg;
+    accelera_rel(:,i) = expStats.(exps{i}).ddz_avg;
 
-    position_arm(:,i) = expStats.(exps{i}).AoE_zmean;
-    velocity_arm(:,i) = expStats.(exps{i}).AoE_zdmean;
-    accelera_arm(:,i) = expStats.(exps{i}).AoE_zddmean;
+    position_arm(:,i) = expStats.(exps{i}).a_avg;
+    velocity_arm(:,i) = expStats.(exps{i}).da_avg;
+    accelera_arm(:,i) = expStats.(exps{i}).dda_avg;
 end
 
 time = [0:length(position_obj)-1]/360;
@@ -98,8 +98,8 @@ time = time*1000;
 N = length(exps);
 for ti = 1:length(time)
     for i = 1:N
-        z(i,ti) = expStats.(exps{i}).EoB_zmean(ti);
-        zd(i,ti) = expStats.(exps{i}).EoB_zdmean(ti);
+        z(i,ti) = expStats.(exps{i}).z_avg(ti);
+        zd(i,ti) = expStats.(exps{i}).dz_avg(ti);
         m(i) = expStats.(exps{i}).mass;
     end
 end
@@ -134,10 +134,10 @@ figure('rend','painters','pos',[pp{1,1} sizex 1.8*sizey]);
     L1.Position(2) = 0.90;
     L1.Position(1) = 0.5-(L1.Position(3)/2);
     L1.FontSize = 9;
-    xlabel("$z$ (mm)")
-    ylabel("$\dot{z}$ (m/s)")
+    xlabel("$mz$ (kg mm)")
+    ylabel("$m\dot{z}$ (kg m/s)")
     zlabel("Time (ms)")
-    view(25,25) 
+    view(205,25) 
     if doSave
         fig = gcf;
         fig.PaperPositionMode = 'auto';
@@ -160,7 +160,8 @@ figure('rend','painters','pos',[pp{1,2} sizex 1.8*sizey]);
     xlabel("$z$ (mm)")
     ylabel("$\dot{z}$ (m/s)")
     zlabel("Time (ms)")
-    view(25,25) 
+    view(205,25)
+
     if doSave
         fig = gcf;
         fig.PaperPositionMode = 'auto';
@@ -183,16 +184,16 @@ figure('rend','painters','pos',[pp{1,3} 0.8333*sizex 1.5*sizey]);
     yticks(linspace(50,130,5))
     
     axes(ha(2));
-    plot(t, hd, "LineWidth", lineWidth, "DisplayName","$\left( ^A \dot{\mathbf{o}}_B\right)_z$"); hold on;
-    plot(t, sd, "LineWidth", lineWidth, 'DisplayName','$\left( ^A \dot{\mathbf{o}}_S\right)_z$'); grid on;
+    plot(t, dh, "LineWidth", lineWidth, "DisplayName","$\left( ^A \dot{\mathbf{o}}_B\right)_z$"); hold on;
+    plot(t, ds, "LineWidth", lineWidth, 'DisplayName','$\left( ^A \dot{\mathbf{o}}_S\right)_z$'); grid on;
     ylabel("Velocity (m/s)")
     xlim([0 140]);
     ylim([-1.5 0.5])
     yticks(linspace(-1.5,0.5,5))
 
     axes(ha(3));
-    plot(t, hdd, "LineWidth", lineWidth, "DisplayName","$\left( ^A \ddot{\mathbf{o}}_B\right)_z$"); hold on;
-    plot(t, sdd, "LineWidth", lineWidth, 'DisplayName','$\left( ^A \ddot{\mathbf{o}}_S\right)_z$'); grid on;
+    plot(t, ddh, "LineWidth", lineWidth, "DisplayName","$\left( ^A \ddot{\mathbf{o}}_B\right)_z$"); hold on;
+    plot(t, dds, "LineWidth", lineWidth, 'DisplayName','$\left( ^A \ddot{\mathbf{o}}_S\right)_z$'); grid on;
     ylabel("Acceleration (m/s$^2$)")
     xlabel("Time (ms)")
     xlim([0 140]);
@@ -222,10 +223,12 @@ figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
     plot(massesSorted, z0mean - Nsigma*z0std,'color',[0.8500 0.3250 0.0980])
     xlabel("Object mass (kg)")
     ylabel("$z(t_0)$ (mm)")
-    ylim([-54,-49]);
+    ylim([49, 54]);
     xlim([0 2.3]);
-    yticks([-54 -53.5 -53 -52.5 -52 -51.5 -51 -50.5 -50 -49.5 -49])
-    yticklabels({'-54','-53.5','-53','-52.5','-52','-51.5','-51','-50.5','-50','-49.5','-49'})
+%     yticks([-54 -53.5 -53 -52.5 -52 -51.5 -51 -50.5 -50 -49.5 -49])
+    yticks(-flip([-54 -53.5 -53 -52.5 -52 -51.5 -51 -50.5 -50 -49.5 -49]))
+%     yticklabels({'-54','-53.5','-53','-52.5','-52','-51.5','-51','-50.5','-50','-49.5','-49'})
+    yticklabels({'49','49,5','50','50,5', '51', '51,5', '52', '52,5', '53', '53,5', '54'})
     L1 = legend({'datapoints','mean','3$\sigma$ interval'},'NumColumns',3,'location','northeast');
     L1.Position(2) = 0.92;
     L1.Position(1) = 0.5-(L1.Position(3)/2)+0.06;
