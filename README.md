@@ -29,7 +29,10 @@ If you are using this paper as reference, please refer to it as
     month = {October}
 }
 ```
-
+Requirements
+===========
+ - [readH5](https://gitlab.tue.nl/impact-aware-robotics-database/data-storage) To read the data
+ - [1D_Archive.h5](https://impact-aware-robotics-database.tue.nl/) Raw data file 
 
 Introduction
 ============
