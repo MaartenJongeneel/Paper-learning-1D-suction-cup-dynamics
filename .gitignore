@@ -2,3 +2,4 @@
 *.asv
 *.mat
 /figures
+/modeling/LWPR models/*
