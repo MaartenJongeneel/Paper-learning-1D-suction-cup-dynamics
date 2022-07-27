@@ -1,10 +1,16 @@
 close all; clear; clc;
-
 % This script loads the 1D archive HDF5 file, finds t_0, performs
 % Savitzky-Golay on the 3D motion, and consequently extracts the vertical
 % motion and saves them to the .mat file data1D.mat. Run this script from
 % main directory.
+
+%% Some settings
+Nsigma = 3;
 plotting = false;
+
+%% Constants
+g = 9.81;
+
 %% Read .h5 file if the .mat version is not available
 if not(isfile("data/1D Archive.mat")) % this generally takes a few minutes
     tic
@@ -24,13 +30,13 @@ else % if 1D Archive.mat is available, load that instead as its faster
     fprintf(append("Loading 1D Archive.mat took ", string(dt), " seconds.\n"))
 end
 
-%% Process data
+%% Process data: Savitzky-Golay and cutting to obtain relevant data
 close all
 % Savitzky-Golay parameters
 p_linear = 3;
 n_linear = 9;
 processedData = processData(struct1D, p_linear, n_linear, 0.14);
-save("data\processedData.mat", "processedData")
+save("data\processedData.mat", "processedData") % save processed data of individual experiments
 
 %% Average data
 exps = fieldnames(processedData);
@@ -39,12 +45,8 @@ masses = [];
 for i = 1:Nexps
     masses = [masses, processedData.(exps{i}).mass];
 end
-
 masses = sort(unique(masses));
 
-Nsigma = 3;
-
-g = 9.81;
 for m = masses
     h_mat = [];
     dh_mat = [];
@@ -124,7 +126,8 @@ for m = masses
     expStats.(append("mass",string(m*1000))).time = exp.time;
     
     expStats.(append("mass",string(m*1000))).f_scuppckg = f_scuppckg;
-    if plotting
+
+    if plotting %plotting if desired
         figure(find(masses == m))
         subplot(3,1,1)
         plot(exp.time, h_avg(masses==m,:),'k')
@@ -149,6 +152,6 @@ for m = masses
     end
 end
 
-save("data\meanAndStdData.mat","expStats")
+save("data\meanAndStdData.mat","expStats") % save experiment mean and stds
 
 
