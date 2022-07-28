@@ -111,8 +111,7 @@ To run the scripts, take the following steps
 <p>&nbsp;</p>
 
 6. Next, make sure that in `LWPRsettings.m` the `update_D` setting is set to 0. Also, make sure line 28 of `learn1Dmodels.m` is commented, and line 29 is uncommented and you fill in the model you want to run (e.g, `570`). Now run `learn1Dmodels.m`. 
-7. Next, run `simulate.m` to simulate for the optimum model.
-8. Finally, run `paperFigures.m` to obtain all the figures as used in the paper.
+7. Finally, run `paperFigures.m` to obtain all the figures as used in the paper.
 
 ## Main functions
 <!-- This repository contains four main scripts:

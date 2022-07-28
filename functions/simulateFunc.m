@@ -58,14 +58,12 @@ for testMass = 1:10
         zeta = [z_sim(ii)*m, dz_sim(ii)*m, t];
 %         zeta = [z_sim(ii), dz_sim(ii)*m, t];
 
-
         f_scuppcg_sim(ii) = lwpr_predict(model, zeta'); % predict the force
-
         ddh_sim(ii) = 1/m*(-m*g + f_scuppcg_sim(ii)) ; % determine acceleration
         dh_sim(ii+1) = dh_sim(ii) + ddh_sim(ii)*dt;
-        %         AoB_z_sim(ii+1) = AoB_z_sim(ii) + AoB_zd_sim(ii)*dt;
         h_sim(ii+1) = h_sim(ii) + dh_sim(ii)*dt + 1/2*ddh_sim(ii)*dt*dt; %AS Feb 17, 2022
     end
+
     % Calculate acceleration at last instance
     ii = length(time_exp);
     f_scuppcg_sim(ii) = lwpr_predict(model, zeta'); % predict the force
@@ -74,41 +72,7 @@ for testMass = 1:10
     dz_sim(end) = dh_sim(end) - da_exp(end);
     EoB_zdd_sim = ddh_sim - dda_exp;
 
-    confidenceDisplayName = "3$\sigma$ margin on experiments";
-    if plotBool
-        execStr = append("f",string(m*1000),' = figure;');
-        eval(execStr)
-        subplot(3,1,1)
-        plot(time_exp, h_exp*1000,'DisplayName',"Experiment mean")
-        hold on
-        plot(time_exp, h_sim*1000,'k',"DisplayName","Simulation",'LineWidth',1)
-        plot(time_exp, (h_exp + Nsigma*h_exp_std)*1000, 'r--', "DisplayName",confidenceDisplayName)
-        plot(time_exp, (h_exp - Nsigma*h_exp_std)*1000, 'r--', "HandleVisibility","off")
-        grid on
-        ylabel("$h$ (mm)","Interpreter","latex","FontSize",fontSize)
-        title(append("Simulation versus experiment with mass of ",string(m), "kg. ", initHyperParGrouping))
-        lgd = legend('Location', 'southwest','FontSize',fontSize*.7);
-
-        subplot(3,1,2)
-        plot(time_exp, dh_exp)
-        hold on
-        plot(time_exp, dh_sim,'k','LineWidth',1)
-        plot(time_exp, dh_exp + Nsigma*dh_exp_std, 'r--', "DisplayName",confidenceDisplayName)
-        plot(time_exp, dh_exp - Nsigma*dh_exp_std, 'r--', "HandleVisibility","off")
-        grid on
-        ylabel("$\dot{h}$ (m/s)","Interpreter","latex","FontSize",fontSize)
-
-        subplot(3,1,3)
-        plot(time_exp, ddh_exp)
-        hold on
-        plot(time_exp, ddh_sim,'k','LineWidth',1)
-        plot(time_exp, ddh_exp + Nsigma*ddh_exp_std, 'r--', "DisplayName",confidenceDisplayName)
-        plot(time_exp, ddh_exp - Nsigma*ddh_exp_std, 'r--', "HandleVisibility","off")
-        grid on
-        ylabel("$\ddot{h}$ (m/s \textsuperscript{2})","Interpreter","latex","FontSize",fontSize)
-        xlabel("Time (s)", "Interpreter","latex",FontSize=fontSize)
-    end
-    
+  
     RMSE_h = sqrt(mean((h_sim-h_exp').^2));
     RMSE_dh = sqrt(mean((dh_sim-dh_exp').^2));
     RMSE_ddh = sqrt(mean((ddh_sim-ddh_exp').^2));
@@ -124,13 +88,22 @@ for testMass = 1:10
     errors.MAE_dh = MAE_dh;
     errors.MAE_ddh = MAE_ddh;
 
+    %Save the data to a struct
     fld = append("mass",string(expStats.(fnStats{testMass}).mass*1000));
     sim_result.(fld).h_sim = h_sim;
     sim_result.(fld).dh_sim = dh_sim;
     sim_result.(fld).ddh_sim = ddh_sim;
-
+    sim_result.(fld).h_exp = h_exp;
+    sim_result.(fld).dh_exp = dh_exp;
+    sim_result.(fld).ddh_exp = ddh_exp;
     sim_result.(fld).errors = errors;
-    sim_result.init_D = str2double(initHyperParGrouping(7:end));
+    sim_result.(fld).Nsigma = Nsigma;
+    sim_result.(fld).time_exp = time_exp;
+    sim_result.(fld).h_exp_std = h_exp_std;
+    sim_result.(fld).dh_exp_std = dh_exp_std;
+    sim_result.(fld).ddh_exp_std = ddh_exp_std;
+    sim_result.(fld).m = m;
+%     sim_result.init_D = str2double(initHyperParGrouping(7:end));
 end
 
 

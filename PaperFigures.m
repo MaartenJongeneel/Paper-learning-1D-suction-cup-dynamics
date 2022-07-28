@@ -12,7 +12,8 @@ fn = fieldnames(data);
 %Settings
 lineWidth = 1.5;    % The linewidth 
 Nsigma    = 3;    % the # of std the confidence interval is plotted at
-doSave    = false;
+doSave    = true;
+initHyperParGrouping = "init_D600";
 
 
 % Colors used for the masses
@@ -105,7 +106,8 @@ for ti = 1:length(time)
     end
 end
 
-
+% Simulating releases
+sim_result = simulateFunc(initHyperParGrouping, true);
 
 %% Plot the figures
 %Check if figures directory exists, if not, it will create one.
@@ -214,8 +216,8 @@ figure('rend','painters','pos',[pp{1,3} 0.8333*sizex 1.5*sizey]);
     end
 
 %% Plot masses vs elongation
-figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
-    ha = tight_subplot(1,1,[.05 .04],[.18 .12],[0.15 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
+figure('rend','painters','pos',[pp{1,4} 0.8333*sizex 0.8*sizey]);
+    ha = tight_subplot(1,1,[.05 .04],[.18 .14],[0.11 0.02]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));
     plot(masses,z0s,'k.'); hold on; grid on;    
     plot(massesSorted, z0mean,'color',[0 0.4470 0.7410])
@@ -229,7 +231,7 @@ figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
     yticks(-flip([-54 -53.5 -53 -52.5 -52 -51.5 -51 -50.5 -50 -49.5 -49]))
     yticklabels({'49','49,5','50','50,5', '51', '51,5', '52', '52,5', '53', '53,5', '54'})
     L1 = legend({'datapoints','mean','3$\sigma$ interval'},'NumColumns',3,'location','northeast');
-    L1.Position(2) = 0.92;
+    L1.Position(2) = 0.9;
     L1.Position(1) = 0.5-(L1.Position(3)/2)+0.06;
     L1.FontSize = 9; 
 
@@ -242,8 +244,8 @@ figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
     end
 
 %% Plot the position velocity and acceleration of object and tool  arm
-figure('rend','painters','pos',[pp{2,1}+[0 250] 2.2*sizex 1.3*sizey]);
-    ha = tight_subplot(3,2,[.05 .07],[.09 .11],[0.04 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
+figure('rend','painters','pos',[pp{2,1}+[0 250] 2*sizex 1*sizey]);
+    ha = tight_subplot(3,2,[.07 .07],[.12 .11],[0.045 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));    
     for ii = 1:width(position_obj); plot(time, position_obj(:,ii)*1000,'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
@@ -300,3 +302,44 @@ figure('rend','painters','pos',[pp{2,1}+[0 250] 2.2*sizex 1.3*sizey]);
         fig.PaperSize = [fig_pos(3) fig_pos(4)];
         print(fig,'figures/ReleaseResults.pdf','-dpdf','-painters')
     end
+
+%% Simulation results
+fnsim = fieldnames(sim_result);
+for ii = 1:length(fnsim)
+    res = sim_result.(fnsim{ii});
+    FontSize = 11;
+
+    figure('rend','painters','pos',[pp{2,4}+[0 250] 0.8*sizex 1*sizey]);
+    ha = tight_subplot(3,1,[.07 .07],[.12 .01],[0.12 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
+        
+        axes(ha(1)); 
+        plot(res.time_exp*1000, res.h_exp*1000); hold on; grid on;
+        plot(res.time_exp*1000, res.h_sim*1000,'k','LineWidth',1)
+        plot(res.time_exp*1000, (res.h_exp + res.Nsigma*res.h_exp_std)*1000, 'r--')
+        plot(res.time_exp*1000, (res.h_exp - res.Nsigma*res.h_exp_std)*1000, 'r--')
+        ylabel("$h$ (mm)",'FontSize',FontSize)
+        xlim([0 140])
+        lgd = legend({'Exp. mean','Simulation','3$\sigma$ on exp.'}, 'Location', 'southwest','FontSize',9);
+
+        axes(ha(2)); 
+        plot(res.time_exp*1000, res.dh_exp); hold on; grid on;        
+        plot(res.time_exp*1000, res.dh_sim,'k','LineWidth',1)
+        plot(res.time_exp*1000, res.dh_exp + res.Nsigma*res.dh_exp_std, 'r--')
+        plot(res.time_exp*1000, res.dh_exp - res.Nsigma*res.dh_exp_std, 'r--')
+        ylabel("$\dot{h}$ (m/s)",'FontSize',FontSize)
+        xlim([0 140])
+
+        axes(ha(3)); 
+        plot(res.time_exp*1000, res.ddh_exp); hold on; grid on;  
+        plot(res.time_exp*1000, res.ddh_sim,'k','LineWidth',1)
+        plot(res.time_exp*1000, res.ddh_exp + res.Nsigma*res.ddh_exp_std, 'r--')
+        plot(res.time_exp*1000, res.ddh_exp - res.Nsigma*res.ddh_exp_std, 'r--')
+        ylabel("$\ddot{h}$ (m/s$^2$)",'FontSize',FontSize)
+        xlabel("Time (ms)",'FontSize',FontSize)
+        xlim([0 140])
+
+    if doSave
+        ax = gcf;
+        exportgraphics(ax,append('figures/',string(res.m*1000),'gram.pdf'))
+    end
+end

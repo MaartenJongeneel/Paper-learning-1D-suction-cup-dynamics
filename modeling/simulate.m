@@ -56,4 +56,4 @@ grid on
 %         print(fig,'figures/ModelErrors.pdf','-dpdf','-painters')
 
 %% Plot simulation results of best init_D
-simulateFunc("init_D600", true);
+sim_result = simulateFunc("init_D600", true);
