@@ -1,4 +1,4 @@
-clearvars; clc; close all; addpath("data"); addpath("figures"); addpath("functions");
+clearvars; clc; close all; addpath("data"); addpath("figures"); addpath("functions"); addpath("modeling");
 set(groot,'defaulttextinterpreter','latex'); set(groot,'defaultAxesTickLabelInterpreter','latex'); set(groot,'defaultLegendInterpreter','latex');
 %% ---------------- learning 1D suction cup dynamics ----------------- %%
 %% Constants and Settings
@@ -12,7 +12,7 @@ fn = fieldnames(data);
 %Settings
 lineWidth = 1.5;    % The linewidth 
 Nsigma    = 3;    % the # of std the confidence interval is plotted at
-doSave    = true;
+doSave    = false;
 
 
 % Colors used for the masses
