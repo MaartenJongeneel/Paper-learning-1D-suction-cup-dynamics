@@ -103,8 +103,10 @@ To run the scripts, take the following steps
 4. Now, make sure that in `LWPRsettings.m` the `update_D` setting is set to 1. Also, make sure line 28 of `learn1Dmodels.m` is uncommented, and line 29 is commented and run `learn1Dmodels.m`. This will take around 10 minutes to learn (for different settings) the force models. 
 5. Run `simulate.m`. This will use the learned models and simulate the force release. A figure will pop up which shows the RMS errors for the different models (see image below). Based on this, you can select the model that gives the smallest error. 
 
+<div align="center">
 <div style = "display: flex; align="center">
 <img src="images/ModelErrors.png" alt="drawing" width=50%/> 
+</div>
 </div>
 
 ## Main functions
