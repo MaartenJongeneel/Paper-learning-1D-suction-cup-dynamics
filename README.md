@@ -95,6 +95,18 @@ The camera intrinsic matrix used to create the synthetic images is stored in the
 The code of this repository is all written in MATLAB and can directly be pulled from this repository. 
 
 # Usage of the scripts
+To run the scripts, take the following steps
+
+1. Make sure that you cloned the [readH5](https://gitlab.tue.nl/impact-aware-robotics-database/data-storage) repository and add it to your MATLAB path.
+2. Create a `data` folder in the root of this clones repository and place there the [1D_Archive.h5](https://impact-aware-robotics-database.tue.nl/) file. This is the experimental data file.
+3. Add all folders and subfolders to the path, and run (from the root folder) the function `dataProcessing.m`. This will subtract the necessary information from the experimental data, and save it as `.mat` files in the `data` folder. 
+4. Now, make sure that in `LWPRsettings.m` the `update_D` setting is set to 1. Also, make sure line 28 of `learn1Dmodels.m` is uncommented, and line 29 is commented and run `learn1Dmodels.m`. This will take around 10 minutes to learn (for different settings) the force models. 
+5. Run `simulate.m`. This will use the learned models and simulate the force release. A figure will pop up which shows the RMS errors for the different models (see image below). Based on this, you can select the model that gives the smallest error. 
+
+<div style = "display: flex; align="center">
+<img src="images/ModelErrors.png" alt="drawing" width=50%/> 
+</div>
+
 ## Main functions
 <!-- This repository contains four main scripts:
 
