@@ -11,10 +11,9 @@ for i = 1:length(initHyperParGroupings) % looping over all init_D
 end
 
 %% plot error vs init_D
+init_Dvec = str2double(extractAfter(initHyperParGroupings,'init_D')');
 for i = 1:length(initHyperParGroupings)
     simulation = simulations{i};
-    init_Dvec(i) = simulation.init_D;
-    simulation = rmfield(simulation,"init_D");
     fn = fieldnames(simulation);
     e_h = []; e_dh = []; e_ddh = [];
     for j = 1:length(fn)
