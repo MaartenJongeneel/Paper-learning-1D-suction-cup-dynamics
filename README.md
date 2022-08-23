@@ -15,7 +15,7 @@ Accurate Prediction of an Object's Vertical Motion during Releasee
 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2022)
 <br>
 <br>
-<!-- <a href="https://hal.archives-ouvertes.fr/hal-03170257">[Early Paper on HAL]</a> -->
+<a href="https://hal.archives-ouvertes.fr/hal-03740751v1">[Early Paper on HAL]</a>
 </h3>
 </div>
 
@@ -97,11 +97,10 @@ The code of this repository is all written in MATLAB and can directly be pulled 
 # Usage of the scripts
 To run the scripts, take the following steps
 
-1. Make sure that you cloned the [readH5](https://gitlab.tue.nl/impact-aware-robotics-database/data-storage) repository and add it to your MATLAB path.
-2. Create a `data` folder in the root of this clones repository and place there the [1D_Archive.h5](https://impact-aware-robotics-database.tue.nl/) file. This is the experimental data file.
-3. Add all folders and subfolders to the path, and run (from the root folder) the function `dataProcessing.m`. This will subtract the necessary information from the experimental data, and save it as `.mat` files in the `data` folder. 
-4. Now, make sure that in `LWPRsettings.m` the `update_D` setting is set to 1. Also, make sure line 28 of `learn1Dmodels.m` is uncommented, and line 29 is commented and run `learn1Dmodels.m`. This will take around 10 minutes to learn (for different settings) the force models. 
-5. Run `simulate.m`. This will use the learned models and simulate the force release. A figure will pop up which shows the RMS errors for the different models (see image below). Based on this, you can select the model that gives the smallest error. 
+1. Download the Impact Aware Manipulation (I.AM.) archive containing suction cup release experiments ([220823_I_AM_Archive_4_1DReleases.h5](https://impact-aware-robotics-database.tue.nl/)) file and place it in the `data` folder. This is the experimental data file.
+2. Add all folders and subfolders to the path, and run (from the root folder) the function `dataProcessing.m`. This will subtract the necessary information from the experimental data, and save it as `.mat` files in the `data` folder. 
+3. Now, make sure that in `modeling/LWPRsettings.m` the `update_D` setting is set to 1. Also, make sure line 28 of `modeling/learn1Dmodels.m` is uncommented, and line 29 is commented and run `modeling/learn1Dmodels.m`. This will take around 10 minutes to learn (for different settings) the force models. 
+4. Run `modeling/simulate.m`. This will use the learned models and simulate the force release. A figure will pop up which shows the RMS errors for the different models (see image below). Based on this, you can select the model that gives the smallest error. 
 
 <div align="center">
 <div style = "display: flex; align="center">
@@ -110,7 +109,7 @@ To run the scripts, take the following steps
 </div>
 <p>&nbsp;</p>
 
-6. Next, make sure that in `LWPRsettings.m` the `update_D` setting is set to 0. Also, make sure line 28 of `learn1Dmodels.m` is commented, and line 29 is uncommented and you fill in the model you want to run (e.g, `570`). Now run `learn1Dmodels.m`. 
+6. Next, make sure that in `modeling/LWPRsettings.m` the `update_D` setting is set to 0. Also, make sure line 28 of `modeling/learn1Dmodels.m` is commented, and line 29 is uncommented and you fill in the model you want to run (e.g, `570`). Now run `modeling/learn1Dmodels.m`. 
 7. Finally, run `paperFigures.m` to obtain all the figures as used in the paper.
 
 ## Main functions
