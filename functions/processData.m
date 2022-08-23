@@ -63,7 +63,7 @@ for i = 1:Nexps
     processedData.(append("experiment",string(i))).dh = dh;
     processedData.(append("experiment",string(i))).ddh = ddh;
     
-    mass = str2double(exp.OBJECT.PlasticPlate002.attr.mass);
+    mass = str2double(exp.OBJECT.PlasticPlate002.mass.ds);
     g = 9.81;
     f_scuppckg = mass*ddh + mass*g;
     processedData.(append("experiment",string(i))).f_scuppckg = f_scuppckg;
