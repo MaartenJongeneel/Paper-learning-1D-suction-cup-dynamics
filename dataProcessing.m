@@ -1,4 +1,5 @@
 close all; clear; clc;
+addpath('functions'); addpath('modeling'); addpath('data'); 
 % This script loads the 1D archive HDF5 file, finds t_0, performs
 % Savitzky-Golay on the 3D motion, and consequently extracts the vertical
 % motion and saves them to the .mat file data1D.mat. Run this script from

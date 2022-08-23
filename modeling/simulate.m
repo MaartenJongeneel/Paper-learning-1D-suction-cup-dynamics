@@ -49,5 +49,11 @@ ylabel("RMSE $\ddot{h}$ (m\textsuperscript{2}/s)", Interpreter="latex")
 xlabel("init_D")
 grid on
 
+% fig = gcf;
+%         fig.PaperPositionMode = 'auto';
+%         fig_pos = fig.PaperPosition;
+%         fig.PaperSize = [fig_pos(3) fig_pos(4)];
+%         print(fig,'figures/ModelErrors.pdf','-dpdf','-painters')
+
 %% Plot simulation results of best init_D
-simulateFunc("init_D600", true);
+sim_result = simulateFunc("init_D600", true);

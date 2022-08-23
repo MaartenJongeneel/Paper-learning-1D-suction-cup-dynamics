@@ -1,4 +1,4 @@
-clearvars; clc; close all; addpath("data"); addpath("figures"); addpath("functions");
+clearvars; clc; close all; addpath("data"); addpath("figures"); addpath("functions"); addpath("modeling");
 set(groot,'defaulttextinterpreter','latex'); set(groot,'defaultAxesTickLabelInterpreter','latex'); set(groot,'defaultLegendInterpreter','latex');
 %% ---------------- learning 1D suction cup dynamics ----------------- %%
 %% Constants and Settings
@@ -10,22 +10,24 @@ exps = fieldnames(expStats);
 fn = fieldnames(data);
 
 %Settings
-lineWidth = 2;    % The linewidth 
+lineWidth = 1.5;    % The linewidth 
 Nsigma    = 3;    % the # of std the confidence interval is plotted at
 doSave    = true;
+initHyperParGrouping = "init_D600";
 
 
-%Colors used for the masses
-colors = [0    0.5172    0.5862
-         0         0    0.4828
-    0.5862    0.8276    0.3103
-    0.9655    0.6207    0.8621
-    0.8276    0.0690    1.0000
-    0.4828    0.1034    0.4138
-    0.9655    0.0690    0.3793
-    1.0000    0.7586    0.5172
-    0.1379    0.1379    0.0345
-    0.5517    0.6552    0.4828];
+% Colors used for the masses
+colors = 1/255*...
+[0   0   123
+ 93  85  0
+ 149 211 79
+ 162 129 0
+ 15  98  106
+ 201 169 128
+ 110 0   0
+ 246 169 1
+ 150 0   0
+ 25  85  60];
 
 
 %Computations
@@ -104,7 +106,8 @@ for ti = 1:length(time)
     end
 end
 
-
+% Simulating releases
+sim_result = simulateFunc(initHyperParGrouping, true);
 
 %% Plot the figures
 %Check if figures directory exists, if not, it will create one.
@@ -127,7 +130,7 @@ figure('rend','painters','pos',[pp{1,1} sizex 1.8*sizey]);
     ha = tight_subplot(1,1,[.05 .04],[.1 .12],[0.04 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));
     for ti=1:length(time); plot3(m'.*z(:,ti)*1000, m'.*zd(:,ti), time(ti)*ones(1,N),'color',[.4, .4, .4],'HandleVisibility','off'); hold on; end; hold on;
-    for ii=1:N; plot3(m(ii)*z(ii,:)*1000, m(ii)*zd(ii,:), time, 'LineWidth',1,'color',colors(ii,:)); hold on; end;
+    for ii=1:N; plot3(m(ii)*z(ii,:)*1000, m(ii)*zd(ii,:), time, 'LineWidth',lineWidth,'color',colors(ii,:)); hold on; end;
     grid on
     axis square
     L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',5,'location','northeast');
@@ -150,7 +153,7 @@ figure('rend','painters','pos',[pp{1,2} sizex 1.8*sizey]);
     ha = tight_subplot(1,1,[.05 .04],[.1 .12],[0.04 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));
     for ti=1:length(time); plot3(z(:,ti)*1000, zd(:,ti), time(ti)*ones(1,N),'color',[.4, .4, .4],'HandleVisibility','off'); hold on; end; hold on;
-    for ii=1:N; plot3(z(ii,:)*1000, zd(ii,:), time, 'LineWidth',1,'color',colors(ii,:)); hold on; end;
+    for ii=1:N; plot3(z(ii,:)*1000, zd(ii,:), time, 'LineWidth',lineWidth,'color',colors(ii,:)); hold on; end;
     grid on
     axis square
     L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',5,'location','northeast');
@@ -161,7 +164,6 @@ figure('rend','painters','pos',[pp{1,2} sizex 1.8*sizey]);
     ylabel("$\dot{z}$ (m/s)")
     zlabel("Time (ms)")
     view(205,25)
-
     if doSave
         fig = gcf;
         fig.PaperPositionMode = 'auto';
@@ -184,16 +186,16 @@ figure('rend','painters','pos',[pp{1,3} 0.8333*sizex 1.5*sizey]);
     yticks(linspace(50,130,5))
     
     axes(ha(2));
-    plot(t, dh, "LineWidth", lineWidth, "DisplayName","$\left( ^A \dot{\mathbf{o}}_B\right)_z$"); hold on;
-    plot(t, ds, "LineWidth", lineWidth, 'DisplayName','$\left( ^A \dot{\mathbf{o}}_S\right)_z$'); grid on;
+    plot(t, dh, "LineWidth", lineWidth); hold on;
+    plot(t, ds, "LineWidth", lineWidth); grid on;
     ylabel("Velocity (m/s)")
     xlim([0 140]);
     ylim([-1.5 0.5])
     yticks(linspace(-1.5,0.5,5))
 
     axes(ha(3));
-    plot(t, ddh, "LineWidth", lineWidth, "DisplayName","$\left( ^A \ddot{\mathbf{o}}_B\right)_z$"); hold on;
-    plot(t, dds, "LineWidth", lineWidth, 'DisplayName','$\left( ^A \ddot{\mathbf{o}}_S\right)_z$'); grid on;
+    plot(t, ddh, "LineWidth", lineWidth); hold on;
+    plot(t, dds, "LineWidth", lineWidth); grid on;
     ylabel("Acceleration (m/s$^2$)")
     xlabel("Time (ms)")
     xlim([0 140]);
@@ -214,8 +216,8 @@ figure('rend','painters','pos',[pp{1,3} 0.8333*sizex 1.5*sizey]);
     end
 
 %% Plot masses vs elongation
-figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
-    ha = tight_subplot(1,1,[.05 .04],[.18 .12],[0.15 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
+figure('rend','painters','pos',[pp{1,4} 0.8333*sizex 0.8*sizey]);
+    ha = tight_subplot(1,1,[.05 .04],[.18 .14],[0.11 0.02]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));
     plot(masses,z0s,'k.'); hold on; grid on;    
     plot(massesSorted, z0mean,'color',[0 0.4470 0.7410])
@@ -225,10 +227,11 @@ figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
     ylabel("$z(t_0)$ (mm)")
     ylim([49, 54]);
     xlim([0 2.3]);
+    xticks([0 0.25 0.5 0.75 1 1.25 1.5 1.75 2 2.25])
     yticks(-flip([-54 -53.5 -53 -52.5 -52 -51.5 -51 -50.5 -50 -49.5 -49]))
     yticklabels({'49','49,5','50','50,5', '51', '51,5', '52', '52,5', '53', '53,5', '54'})
     L1 = legend({'datapoints','mean','3$\sigma$ interval'},'NumColumns',3,'location','northeast');
-    L1.Position(2) = 0.92;
+    L1.Position(2) = 0.9;
     L1.Position(1) = 0.5-(L1.Position(3)/2)+0.06;
     L1.FontSize = 9; 
 
@@ -241,49 +244,55 @@ figure('rend','painters','pos',[pp{1,4} 0.8333*sizex sizey]);
     end
 
 %% Plot the position velocity and acceleration of object and tool  arm
-figure('rend','painters','pos',[pp{2,1}+[0 250] 2.2*sizex 1.3*sizey]);
-    ha = tight_subplot(3,2,[.05 .07],[.1 .14],[0.06 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
+figure('rend','painters','pos',[pp{2,1}+[0 250] 2*sizex 1*sizey]);
+    ha = tight_subplot(3,2,[.07 .07],[.12 .11],[0.045 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));    
-    for ii = 1:width(position_obj); plot(time, position_obj(:,ii)*1000,'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, position_obj(:,ii)*1000,'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
+    xlim([0 142]);
     ylabel('$h$ (mm)')
 
     axes(ha(3)); 
-    for ii = 1:width(position_obj); plot(time, velocity_obj(:,ii),'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, velocity_obj(:,ii),'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
+    xlim([0 142]);
     ylabel('$\dot{h}$ (m/s)')
     
     axes(ha(5)); 
-    for ii = 1:width(position_obj); plot(time, accelera_obj(:,ii),'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, accelera_obj(:,ii),'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
+    xlim([0 142]);
     ylabel('$\ddot{h}$ (m/s$^2$)')
     xlabel("Time (ms)")
 
     axes(ha(2));    
-    for ii = 1:width(position_obj); plot(time, position_arm(:,ii)*1000,'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, position_arm(:,ii)*1000,'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
+    xlim([0 142]);
     ylabel('$a$ (mm)')
 
     axes(ha(4)); 
-    for ii = 1:width(position_obj); plot(time, velocity_arm(:,ii),'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, velocity_arm(:,ii),'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
+    xlim([0 142]);
     ylabel('$\dot{a}$ (m/s)')
     
     axes(ha(6)); 
-    for ii = 1:width(position_obj); plot(time, accelera_arm(:,ii),'LineWidth',1,'color',colors(ii,:)); hold on; drawnow; end
+    for ii = 1:width(position_obj); plot(time, accelera_arm(:,ii),'LineWidth',lineWidth,'color',colors(ii,:)); hold on; drawnow; end
     hold on
     grid on
+    xlim([0 142]);
     ylabel('$\ddot{a}$ (m/s$^2$)')
     xlabel("Time (ms)")
 
-    L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',5,'location','northeast');
-    L1.Position(2) = 0.90;
-    L1.Position(1) = 0.5-(L1.Position(3)/2)+0.06;
+    L1 = legend({"0.16kg","0.306kg","0.452kg",'0.642kg',"0.714kg","0.784kg","0.974kg","1.181kg","1.581kg","2.187kg"},'NumColumns',10,'location','northeast');
+    L1.Position(2) = 0.93;
+    L1.Position(1) = 0.5-(L1.Position(3)/2);
     L1.FontSize = 9; 
 
     if doSave
@@ -293,3 +302,44 @@ figure('rend','painters','pos',[pp{2,1}+[0 250] 2.2*sizex 1.3*sizey]);
         fig.PaperSize = [fig_pos(3) fig_pos(4)];
         print(fig,'figures/ReleaseResults.pdf','-dpdf','-painters')
     end
+
+%% Simulation results
+fnsim = fieldnames(sim_result);
+for ii = 1:length(fnsim)
+    res = sim_result.(fnsim{ii});
+    FontSize = 11;
+
+    figure('rend','painters','pos',[pp{2,4}+[0 250] 0.8*sizex 1*sizey]);
+    ha = tight_subplot(3,1,[.07 .07],[.12 .01],[0.12 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
+        
+        axes(ha(1)); 
+        plot(res.time_exp*1000, res.h_exp*1000); hold on; grid on;
+        plot(res.time_exp*1000, res.h_sim*1000,'k','LineWidth',1)
+        plot(res.time_exp*1000, (res.h_exp + res.Nsigma*res.h_exp_std)*1000, 'r--')
+        plot(res.time_exp*1000, (res.h_exp - res.Nsigma*res.h_exp_std)*1000, 'r--')
+        ylabel("$h$ (mm)",'FontSize',FontSize)
+        xlim([0 140])
+        lgd = legend({'Exp. mean','Simulation','3$\sigma$ on exp.'}, 'Location', 'southwest','FontSize',9);
+
+        axes(ha(2)); 
+        plot(res.time_exp*1000, res.dh_exp); hold on; grid on;        
+        plot(res.time_exp*1000, res.dh_sim,'k','LineWidth',1)
+        plot(res.time_exp*1000, res.dh_exp + res.Nsigma*res.dh_exp_std, 'r--')
+        plot(res.time_exp*1000, res.dh_exp - res.Nsigma*res.dh_exp_std, 'r--')
+        ylabel("$\dot{h}$ (m/s)",'FontSize',FontSize)
+        xlim([0 140])
+
+        axes(ha(3)); 
+        plot(res.time_exp*1000, res.ddh_exp); hold on; grid on;  
+        plot(res.time_exp*1000, res.ddh_sim,'k','LineWidth',1)
+        plot(res.time_exp*1000, res.ddh_exp + res.Nsigma*res.ddh_exp_std, 'r--')
+        plot(res.time_exp*1000, res.ddh_exp - res.Nsigma*res.ddh_exp_std, 'r--')
+        ylabel("$\ddot{h}$ (m/s$^2$)",'FontSize',FontSize)
+        xlabel("Time (ms)",'FontSize',FontSize)
+        xlim([0 140])
+
+    if doSave
+        ax = gcf;
+        exportgraphics(ax,append('figures/',string(res.m*1000),'gram.pdf'))
+    end
+end
