@@ -22,9 +22,9 @@ f = waitbar(0, "Applying Savitzky-Golay..");
 for i = 1:Nexps
     tic
     exp = data.(exps{i});
-    AHB_raw = exp.SENSOR_MEASUREMENT.Mocap.POSTPROCESSING.PlasticPlate2.transforms.ds;
-    AHE_raw = exp.SENSOR_MEASUREMENT.Mocap.POSTPROCESSING.Gripper_B2.transforms.ds;
-    AHS_raw = exp.SENSOR_MEASUREMENT.Mocap.POSTPROCESSING.Suction_cup2.transforms.ds;
+    AHB_raw = exp.SENSOR_MEASUREMENT.Mocap.POSTPROCESSING.PlasticPlate002.transforms.ds;
+    AHE_raw = exp.SENSOR_MEASUREMENT.Mocap.POSTPROCESSING.GripperB002.transforms.ds;
+    AHS_raw = exp.SENSOR_MEASUREMENT.Mocap.POSTPROCESSING.SuctionCup002.transforms.ds;
     for j = 1:length(AHB_raw)
         AoB_raw(:,j) = AHB_raw{j}(1:3,4);
         AoE_raw(:,j) = AHE_raw{j}(1:3,4);
@@ -63,7 +63,7 @@ for i = 1:Nexps
     processedData.(append("experiment",string(i))).dh = dh;
     processedData.(append("experiment",string(i))).ddh = ddh;
     
-    mass = str2double(exp.OBJECT.PlasticPlate2.attr.mass);
+    mass = str2double(exp.OBJECT.PlasticPlate002.attr.mass);
     g = 9.81;
     f_scuppckg = mass*ddh + mass*g;
     processedData.(append("experiment",string(i))).f_scuppckg = f_scuppckg;
