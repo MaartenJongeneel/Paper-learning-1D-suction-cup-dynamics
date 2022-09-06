@@ -49,9 +49,11 @@ Table of content
 # Overview
 ### **Test-data**
 With this code repository comes a data file, which can be found [here](https://doi.org/10.4121/20536569/). This data file (called an Archive) contains data of release experiments. The sequence of images below show a typical release experiment.
-<p align="center">
+<div align="center">
+<div style = "display: flex; align="center">
 <img src="images/TypicalRelease.png" width="50%"/> 
-</p> 
+</div>
+</div> 
 The blue plastic plate shown in the image above can be used to attach different weights. In the experiments, 10 different weights were attached to the blue plate and for each weight, the release experiment was repeated 11 times. 
 
 <p>&nbsp;</p>
