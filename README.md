@@ -22,7 +22,7 @@ IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2022)
 If you are using this paper as reference, please refer to it as
 ```bibtex
 @inproceedings{Lubbers2022_LearningSuction,
-    author = {M Lubbers J van Voorst M J Jongeneel and A Saccon},
+    author = {M Lubbers and J van Voorst and M J Jongeneel and A Saccon},
     title = {{Learning Suction Cup Dynamics from Motion Capture: Accurate Prediction of an Object's Vertical Motion during Release}},
     booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2022)},
     year = {2022},
@@ -31,7 +31,7 @@ If you are using this paper as reference, please refer to it as
 ```
 Requirements
 ===========
- - [1D_Archive.h5](https://doi.org/10.4121/20536569/) Raw data file 
+ - [1D_Archive.h5](https://doi.org/10.4121/20536569) Raw data file 
 
 Introduction
 ============
@@ -48,7 +48,7 @@ Table of content
 
 # Overview
 ### **Test-data**
-With this code repository comes a data file, which can be found [here](https://doi.org/10.4121/20536569/). This data file (called an Archive) contains data of release experiments. The sequence of images below show a typical release experiment.
+With this code repository comes a data file, which can be found [here](https://doi.org/10.4121/20536569). This data file (called an Archive) contains data of release experiments. The sequence of images below show a typical release experiment.
 <div align="center">
 <div style = "display: flex; align="center">
 <img src="images/TypicalRelease.png" width="50%"/> 
