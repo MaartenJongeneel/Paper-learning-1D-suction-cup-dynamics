@@ -79,18 +79,12 @@ The code of this repository is all written in MATLAB and can directly be pulled 
 To run the scripts, take the following steps
 
 ## Step 1
-<hr>
-
 Download the Impact Aware Manipulation (I.AM.) archive containing suction cup release experiments ([220823_I_AM_Archive_4_1DReleases.h5](https://impact-aware-robotics-database.tue.nl/)) file and place it in the `data` folder. This is the experimental data file.
 
 ## Step 2
-<hr></hr>
-
 Add all folders and subfolders to the path, and run (from the root folder) the function `dataProcessing.m`. This will subtract the necessary information from the experimental data, and save it as `.mat` files in the `data` folder. 
 
 ## Step 3
-<hr>
-
 Now, make sure that in `modeling/LWPRsettings.m` line 3 is set to
 ```matlab
 3 model = lwpr_set(model, 'update_D', 1);
@@ -103,8 +97,6 @@ Also, make sure line 28 of `modeling/learn1Dmodels.m` is uncommented, and line 2
 and run `modeling/learn1Dmodels.m`. This will take around 10 minutes to learn (for different settings) the force models. 
 
 ## Step 4
-<hr>
-
 Run `modeling/simulate.m`. This will use the learned models and simulate the force release. A figure will pop up which shows the RMS errors for the different models (see image below). Based on this, you can select the model that gives the smallest error. 
 
 <div align="center">
@@ -115,8 +107,6 @@ Run `modeling/simulate.m`. This will use the learned models and simulate the for
 <p>&nbsp;</p>
 
 ## Step 5
-<hr>
-
 Next, make sure that in `modeling/LWPRsettings.m` the `update_D` setting is set to 0 such that we have
 ```matlab
 3 model = lwpr_set(model, 'update_D', 0);
