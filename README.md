@@ -78,10 +78,34 @@ The code of this repository is all written in MATLAB and can directly be pulled 
 # Usage of the scripts
 To run the scripts, take the following steps
 
-1. Download the Impact Aware Manipulation (I.AM.) archive containing suction cup release experiments ([220823_I_AM_Archive_4_1DReleases.h5](https://impact-aware-robotics-database.tue.nl/)) file and place it in the `data` folder. This is the experimental data file.
-2. Add all folders and subfolders to the path, and run (from the root folder) the function `dataProcessing.m`. This will subtract the necessary information from the experimental data, and save it as `.mat` files in the `data` folder. 
-3. Now, make sure that in `modeling/LWPRsettings.m` the `update_D` setting is set to 1. Also, make sure line 28 of `modeling/learn1Dmodels.m` is uncommented, and line 29 is commented and run `modeling/learn1Dmodels.m`. This will take around 10 minutes to learn (for different settings) the force models. 
-4. Run `modeling/simulate.m`. This will use the learned models and simulate the force release. A figure will pop up which shows the RMS errors for the different models (see image below). Based on this, you can select the model that gives the smallest error. 
+## Step 1
+<hr>
+
+Download the Impact Aware Manipulation (I.AM.) archive containing suction cup release experiments ([220823_I_AM_Archive_4_1DReleases.h5](https://impact-aware-robotics-database.tue.nl/)) file and place it in the `data` folder. This is the experimental data file.
+
+## Step 2
+<hr></hr>
+
+Add all folders and subfolders to the path, and run (from the root folder) the function `dataProcessing.m`. This will subtract the necessary information from the experimental data, and save it as `.mat` files in the `data` folder. 
+
+## Step 3
+<hr>
+
+Now, make sure that in `modeling/LWPRsettings.m` line 3 is set to
+```matlab
+3 model = lwpr_set(model, 'update_D', 1);
+```
+Also, make sure line 28 of `modeling/learn1Dmodels.m` is uncommented, and line 29 is commented such that we have 
+```matlab
+28 init_Dvec = 650:-10:550; % initial kernel width/receptive field distance metric
+29 % init_Dvec = 600;
+``` 
+and run `modeling/learn1Dmodels.m`. This will take around 10 minutes to learn (for different settings) the force models. 
+
+## Step 4
+<hr>
+
+Run `modeling/simulate.m`. This will use the learned models and simulate the force release. A figure will pop up which shows the RMS errors for the different models (see image below). Based on this, you can select the model that gives the smallest error. 
 
 <div align="center">
 <div style = "display: flex; align="center">
@@ -90,8 +114,24 @@ To run the scripts, take the following steps
 </div>
 <p>&nbsp;</p>
 
-6. Next, make sure that in `modeling/LWPRsettings.m` the `update_D` setting is set to 0. Also, make sure line 28 of `modeling/learn1Dmodels.m` is commented, and line 29 is uncommented and you fill in the model you want to run (e.g, `570`). Now run `modeling/learn1Dmodels.m`. 
-7. Finally, run `paperFigures.m` to obtain all the figures as used in the paper.
+## Step 5
+<hr>
+
+Next, make sure that in `modeling/LWPRsettings.m` the `update_D` setting is set to 0 such that we have
+```matlab
+3 model = lwpr_set(model, 'update_D', 0);
+```
+Also, make sure line 28 of `modeling/learn1Dmodels.m` is commented, and line 29 is uncommented, such that we have
+```matlab
+28 % init_Dvec = 650:-10:550; % initial kernel width/receptive field distance metric
+29 init_Dvec = 600;
+``` 
+and you fill in (on line 29) the model you want to run (e.g, `600` as in the example code above). Now run `modeling/learn1Dmodels.m`. 
+
+## Step 6
+<hr>
+
+Finally, run `paperFigures.m` to obtain all the figures as used in the paper.
 
 # Contact
 In case you have questions or if you encountered an error, please contact us through the "Issues" functionality on GIT. 

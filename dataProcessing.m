@@ -16,7 +16,7 @@ g = 9.81;
 if not(isfile("data/1D Archive.mat")) % this generally takes a few minutes
     tic
     fprintf("Loading .h5 file... \n")
-    struct1D = readH5("data/220823_I_AM_Archive_4_1DReleases.h5");
+    struct1D = readH5("data/220920_I_AM_Archive_4_1DReleases.h5");
     dt = toc;
     fprintf(append("Reading .h5 file took ", string(dt), " seconds.\n"))
     fprintf("Saving data in .mat file... \n")

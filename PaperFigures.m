@@ -178,12 +178,12 @@ figure('rend','painters','pos',[pp{1,2} sizex 1.8*sizey]);
 figure('rend','painters','pos',[pp{1,3} 0.8333*sizex 1.5*sizey]);
     ha = tight_subplot(3,1,[.05 .04],[.08 .08],[0.1 0.03]);  %[gap_h gap_w] [lower upper] [left right] 
     axes(ha(1));
-    plot(t, -(exp.z+exp.a)*1e3, "LineWidth", lineWidth, "DisplayName","package"); hold on; grid on;
+    plot(t, (exp.a-exp.z)*1e3, "LineWidth", lineWidth, "DisplayName","package"); hold on; grid on;
     plot(t, s*1e3, "LineWidth", lineWidth, 'DisplayName','suction cup')
     ylabel("Height (mm)")
     xlim([0 140]);
-    ylim([50 130])
-    yticks(linspace(50,130,5))
+    ylim([30 110])
+    yticks(linspace(30,110,5))
     
     axes(ha(2));
     plot(t, dh, "LineWidth", lineWidth); hold on;
