@@ -129,8 +129,6 @@ Also, make sure line 28 of `modeling/learn1Dmodels.m` is commented, and line 29 
 and you fill in (on line 29) the model you want to run (e.g, `600` as in the example code above). Now run `modeling/learn1Dmodels.m`. 
 
 ## Step 6
-<hr>
-
 Finally, run `paperFigures.m` to obtain all the figures as used in the paper.
 
 # Contact
