@@ -79,7 +79,7 @@ The code of this repository is all written in MATLAB and can directly be pulled 
 To run the scripts, take the following steps
 
 ## Step 1
-Download the Impact Aware Manipulation (I.AM.) archive containing suction cup release experiments ([220920_I_AM_Archive_4_1DReleases.h5](https://impact-aware-robotics-database.tue.nl/)) file and place it in the `data` folder. This is the experimental data file.
+Download the Impact Aware Manipulation (I.AM.) archive containing suction cup release experiments ([220920_I_AM_Archive_4_1DReleases.h5](https://doi.org/10.4121/20536569)) file and place it in the `data` folder. This is the experimental data file.
 
 ## Step 2
 Add all folders and subfolders to the path, and run (from the root folder) the function `dataProcessing.m`. This will subtract the necessary information from the experimental data, and save it as `.mat` files in the `data` folder. 
