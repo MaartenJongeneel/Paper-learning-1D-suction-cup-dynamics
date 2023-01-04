@@ -15,6 +15,9 @@ Accurate Prediction of an Object's Vertical Motion during Release
 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2022)
 <br>
 <br>
+<a href="https://ieeexplore.ieee.org/document/9982211">[Published paper on IEEE]</a>
+<br>
+<br>
 <a href="https://hal.archives-ouvertes.fr/hal-03740751v1">[Early Paper on HAL]</a>
 </h3>
 </div>
@@ -26,7 +29,9 @@ If you are using this paper as reference, please refer to it as
     title = {{Learning Suction Cup Dynamics from Motion Capture: Accurate Prediction of an Object's Vertical Motion during Release}},
     booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2022)},
     year = {2022},
-    month = {October}
+    month = {October},
+    pages = {1541-1547},
+    doi = {https://doi.org/10.1109/IROS47612.2022.9982211}
 }
 ```
 Requirements
